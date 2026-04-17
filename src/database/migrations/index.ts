@@ -1,4 +1,4 @@
-import { MigrationProvider, Migration } from 'kysely';
+import { Migration, MigrationProvider } from 'kysely';
 import { initialMigration } from './00_initial.js';
 
 /**
@@ -8,7 +8,7 @@ import { initialMigration } from './00_initial.js';
  */
 const migrations: Migration[] = [initialMigration];
 
-export class GameAggregatorMigrationProvider implements MigrationProvider {
+export class ImageUploaderMigrationProvider implements MigrationProvider {
   async getMigrations(): Promise<Record<string, Migration>> {
     return Object.fromEntries(
       migrations.map((migration, index) => [

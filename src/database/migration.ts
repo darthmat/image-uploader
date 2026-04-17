@@ -1,13 +1,13 @@
+import { dbConfig } from '@/config.js';
 import { Migrator } from 'kysely';
 import { createDatabase } from './db.js';
-import { GameAggregatorMigrationProvider } from './migrations/index.js';
-import { dbConfig } from '@/config.js';
+import { ImageUploaderMigrationProvider } from './migrations/index.js';
 
 await using db = createDatabase(dbConfig);
 
 const migrator = new Migrator({
   db,
-  provider: new GameAggregatorMigrationProvider(),
+  provider: new ImageUploaderMigrationProvider(),
 });
 
 const { error, results } = await migrator.migrateToLatest();

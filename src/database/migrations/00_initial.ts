@@ -9,9 +9,11 @@ export const initialMigration: Migration = {
       .createTable('image')
       .addColumn('id', 'uuid', (col) => col.primaryKey())
       .addColumn('title', 'varchar', (col) => col.notNull())
-      .addColumn('wdth', 'varchar', (col) => col.notNull())
-      .addColumn('height', 'varchar', (col) => col.notNull())
       .addColumn('url', 'varchar', (col) => col.notNull())
+      .addColumn('height', 'varchar', (col) => col.notNull())
+      .addColumn('width', 'varchar', (col) => col.notNull())
+      .addColumn('type', 'varchar', (col) => col.notNull())
+      .addColumn('size', 'integer', (col) => col.notNull())
       .addColumn('created_at', 'timestamp', (col) =>
         col.defaultTo(sql`now()`).notNull(),
       )
