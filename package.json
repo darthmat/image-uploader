@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "develop": "tsx --env-file=.env watch src/index.ts",
+    "develop": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc && tsc-alias && cpy src/**/*.json dist",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
