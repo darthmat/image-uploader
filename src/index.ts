@@ -2,7 +2,7 @@ import express from 'express';
 import { readFileSync } from 'fs';
 import swaggerUi from 'swagger-ui-express';
 import { RegisterRoutes } from './build/tsoa/routes.js';
-import { config } from './config.js';
+import { config, dbConfig } from './config.js';
 import { container } from './container.js';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 const _dirname = dirname(fileURLToPath(import.meta.url));
 
 async function start() {
-  await container(config);
+  await container(config, dbConfig);
 
   const app = express();
   app.use(express.json());
