@@ -1,6 +1,6 @@
 import { Controller, Get, Path, Post, Route, SuccessResponse } from 'tsoa';
-import { IImageService } from './images.interface.js';
-import { ImageDTO } from './images.dto.js';
+import { ImageDTO } from './image.dto.js';
+import { IImageService } from './image.interface.js';
 
 @Route('images')
 export class ImagesController extends Controller {
@@ -10,7 +10,7 @@ export class ImagesController extends Controller {
 
   @Get(':id')
   @SuccessResponse('200', 'OK')
-  async getImage(@Path() id: string): Promise<ImageDTO> {
+  async getImage(@Path() id: string): Promise<ImageDTO | null> {
     return await this.imageService.getImage(id);
   }
 

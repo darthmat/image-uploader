@@ -10,7 +10,7 @@ export interface ImageUploaderDatabaseTables {
 interface ImageTable {
   id: string;
   title: string;
-  url: URL;
+  url: string;
   height: number;
   width: number;
   type: string;

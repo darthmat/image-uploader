@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 const _dirname = dirname(fileURLToPath(import.meta.url));
 
 async function start() {
-  await container(config, dbConfig);
+  await container(dbConfig);
 
   const app = express();
   app.use(express.json());
