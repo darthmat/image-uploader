@@ -22,7 +22,7 @@ export const initialMigration: Migration = {
     await db.schema
       .createIndex('image_query_idx')
       .on('image')
-      .column('query')
+      .column('title')
       .execute();
   },
   async down(db) {

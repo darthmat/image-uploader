@@ -8,10 +8,12 @@ export interface ImageUploaderDatabaseTables {
 }
 
 interface ImageTable {
-  id: Generated<number>;
+  id: string;
   title: string;
-  width: number;
+  url: URL;
   height: number;
-  url: string;
+  width: number;
+  type: string;
+  size: number;
   created_at: Generated<Date>;
 }
