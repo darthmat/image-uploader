@@ -7,6 +7,40 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"URL": {
+				"type": "string",
+				"description": "The **`URL`** interface is used to parse, construct, normalize, and encode URL.\n\n[MDN Reference](https://developer.mozilla.org/docs/Web/API/URL)"
+			},
+			"ImageDTO": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"url": {
+						"$ref": "#/components/schemas/URL"
+					},
+					"height": {
+						"type": "number",
+						"format": "double"
+					},
+					"width": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"url",
+					"height",
+					"width"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"HealthCheck": {
 				"properties": {
 					"uptime": {
@@ -38,6 +72,116 @@
 		"contact": {}
 	},
 	"paths": {
+		"/images/{id}": {
+			"get": {
+				"operationId": "GetImage",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/ImageDTO"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Image not found"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/images": {
+			"get": {
+				"operationId": "GetImages",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ImageDTO"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "SaveImages",
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "width",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "height",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"format": "binary"
+									},
+									"title": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"file",
+									"title"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
 		"/healthz": {
 			"get": {
 				"operationId": "Healthz",

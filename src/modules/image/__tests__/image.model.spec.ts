@@ -1,0 +1,34 @@
+import { describe, expect, it } from 'vitest';
+import { Image } from '../image.model.js';
+
+describe('Image', () => {
+  describe('create', () => {
+    it('creates image with generated id', () => {
+      const image = Image.create({
+        title: 'my-image',
+        url: new URL('http://localhost/fake-uploads/my-image'),
+        width: 200,
+        height: 150,
+        type: 'image/webp',
+        size: 1000,
+        createdAt: new Date(),
+      });
+
+      expect(image).toBeDefined();
+    });
+
+    it('throws when title is too short', () => {
+      expect(() =>
+        Image.create({
+          title: 'ab',
+          url: new URL('http://localhost/fake-uploads/ab'),
+          width: 200,
+          height: 150,
+          type: 'image/webp',
+          size: 1000,
+          createdAt: new Date(),
+        }),
+      ).toThrow('Title too short');
+    });
+  });
+});

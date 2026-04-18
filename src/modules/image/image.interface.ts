@@ -4,7 +4,11 @@ import { Image } from './image.model.js';
 export interface IImageService {
   getImages(): Promise<ImageDTO[]>;
   getImage(id: string): Promise<ImageDTO | null>;
-  saveImage(): Promise<void>;
+  saveImage(
+    file: Express.Multer.File,
+    title: string,
+    dimensions: { width: number; height: number },
+  ): Promise<void>;
 }
 
 export interface IImageRepository {

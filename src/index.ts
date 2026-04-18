@@ -1,11 +1,12 @@
 import express from 'express';
 import { readFileSync } from 'fs';
-import swaggerUi from 'swagger-ui-express';
+import { serve, setup } from 'swagger-ui-express';
 import { RegisterRoutes } from './build/tsoa/routes.js';
 import { config, dbConfig } from './config.js';
 import { container } from './container.js';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import multer from 'multer';
 
 const _dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -13,6 +14,10 @@ async function start() {
   await container(dbConfig);
 
   const app = express();
+  const upload = multer({ storage: multer.memoryStorage() });
+
+  app.use(upload.single('file'));
+
   app.use(express.json());
 
   app.get('/docs/swagger.json', (_req, res) => {
@@ -25,8 +30,8 @@ async function start() {
 
   app.use(
     '/docs',
-    swaggerUi.serve,
-    swaggerUi.setup(undefined, {
+    serve,
+    setup(undefined, {
       swaggerOptions: {
         url: '/docs/swagger.json',
         showRequestHeaders: true,
@@ -35,6 +40,8 @@ async function start() {
       },
     }),
   );
+
+  app.use('/files', express.static('uploads'));
 
   RegisterRoutes(app);
 

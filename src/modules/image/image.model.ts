@@ -21,7 +21,7 @@ export class Image {
     } = data);
   }
 
-  static create(data: ImageData): Image {
+  static create(data: Omit<ImageData, 'id'>): Image {
     if (data.title.length < 3) throw new Error('Title too short');
 
     return new Image({
