@@ -67,7 +67,7 @@ describe('ImageService', () => {
       });
 
       expect(storageService.save).toHaveBeenCalledWith(
-        'my-image',
+        'my-image.webp',
         Buffer.from('fake-image'),
       );
     });
