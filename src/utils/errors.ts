@@ -15,9 +15,10 @@ export class ImageAlreadyExistsError extends Error {
 }
 
 export class InternalError extends Error {
-  constructor() {
+  constructor(cause?: unknown) {
     super('An internal error occurred.');
     this.name = 'InternalError';
+    this.cause = cause;
   }
 }
 

@@ -1,3 +1,5 @@
+import { ValidationError } from '@/utils/errors.js';
+
 export class Image {
   readonly id: string;
   readonly title: string;
@@ -22,7 +24,7 @@ export class Image {
   }
 
   static create(data: Omit<ImageData, 'id'>): Image {
-    if (data.title.length < 3) throw new Error('Title too short');
+    if (data.title.length < 3) throw new ValidationError('Title too short');
 
     return new Image({
       ...data,

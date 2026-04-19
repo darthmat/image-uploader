@@ -1,5 +1,6 @@
 import type { Multer } from 'multer';
 import type { Request, Response } from 'express';
+import { InternalError } from './errors.js';
 
 export function processFile(
   upload: Multer,
@@ -9,7 +10,7 @@ export function processFile(
   return new Promise((resolve, reject) => {
     upload.single('file')(request, response, (error: unknown) => {
       if (error) {
-        reject(new Error('File upload failed', { cause: error }));
+        reject(new InternalError({ cause: error }));
         return null;
       }
 
