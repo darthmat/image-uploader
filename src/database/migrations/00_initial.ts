@@ -8,7 +8,7 @@ export const initialMigration: Migration = {
     await db.schema
       .createTable('image')
       .addColumn('id', 'uuid', (col) => col.primaryKey())
-      .addColumn('title', 'varchar', (col) => col.notNull())
+      .addColumn('title', 'varchar', (col) => col.notNull().unique())
       .addColumn('url', 'varchar', (col) => col.notNull())
       .addColumn('height', 'integer', (col) => col.notNull())
       .addColumn('width', 'integer', (col) => col.notNull())

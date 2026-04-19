@@ -14,7 +14,7 @@ export function createFakeImage(
 ): Image {
   return Image.fromPersistence({
     id: overrides.id ?? crypto.randomUUID(),
-    title: overrides.title ?? 'Fake Image',
+    title: overrides.title ?? crypto.randomUUID(),
     url: overrides.url ?? new URL('https://cdn.example.com/fake.png'),
     width: overrides.width ?? 800,
     height: overrides.height ?? 600,

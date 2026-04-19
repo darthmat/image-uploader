@@ -19,7 +19,8 @@ export interface IImageRepository {
     page: PageSelection | undefined,
     title?: string,
   ): Promise<PaginatedResult<Image>>;
-  getImage(id: string): Promise<Image | null>;
+  getImageById(id: string): Promise<Image | null>;
+  getImageByTitle(title: string): Promise<Image | null>;
   saveImage(image: Image): Promise<void>;
 }
 

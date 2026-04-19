@@ -5,13 +5,23 @@ import { Image, ImageData } from './image.model.js';
 export class FakeImageRepository implements IImageRepository {
   private readonly images = new Map<string, ImageData>();
 
-  getImage = vitest.fn<IImageRepository['getImage']>(async (id) => {
+  getImageById = vitest.fn<IImageRepository['getImageById']>(async (id) => {
     const image = this.images.get(id);
 
     if (!image) return null;
 
     return Image.fromPersistence(image);
   });
+
+  getImageByTitle = vitest.fn<IImageRepository['getImageByTitle']>(
+    async (title) => {
+      const image = [...this.images.values()].find((i) => i.title === title);
+
+      if (!image) return null;
+
+      return Image.fromPersistence(image);
+    },
+  );
 
   getImages = vitest.fn<IImageRepository['getImages']>(
     async ({ offset, limit }: PageSelection = {}, title?) => {
@@ -45,6 +55,15 @@ export class FakeImageRepository implements IImageRepository {
   );
 
   saveImage = vitest.fn<IImageRepository['saveImage']>(async (image) => {
-    this.images.set(image.id, image.data);
+    this.images.set(image.id, {
+      id: image.id,
+      title: image.title,
+      url: image.url,
+      height: 100,
+      width: 200,
+      type: '',
+      size: 0,
+      createdAt: new Date(),
+    });
   });
 }

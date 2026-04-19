@@ -15,7 +15,7 @@ describe('ImageRepository', () => {
 
   describe('getImage', () => {
     it('should return null when image does not exist', async () => {
-      const result = await repository.getImage(crypto.randomUUID());
+      const result = await repository.getImageById(crypto.randomUUID());
 
       expect(result).toBeNull();
     });
@@ -24,7 +24,7 @@ describe('ImageRepository', () => {
       const fakeImage = createFakeImage({ title: 'image' });
       await repository.saveImage(fakeImage);
 
-      const result = await repository.getImage(fakeImage.id);
+      const result = await repository.getImageById(fakeImage.id);
 
       expect(result).not.toBeNull();
       expect(result?.id).toBe(fakeImage.id);
@@ -41,7 +41,7 @@ describe('ImageRepository', () => {
       });
       await repository.saveImage(fakeImage);
 
-      const result = await repository.getImage(fakeImage.id);
+      const result = await repository.getImageById(fakeImage.id);
 
       expect(result?.url.toString()).toBe(fakeImage.url.toString());
       expect(result?.width).toBe(fakeImage.width);
@@ -57,7 +57,7 @@ describe('ImageRepository', () => {
 
       await repository.saveImage(fakeImage);
 
-      const result = await repository.getImage(fakeImage.id);
+      const result = await repository.getImageById(fakeImage.id);
 
       expect(result).not.toBeNull();
     });

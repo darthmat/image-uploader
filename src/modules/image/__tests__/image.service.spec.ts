@@ -1,12 +1,13 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { IImageService } from '../image.interface.js';
-import { ImageService } from '../image.service.js';
-import { FakeImageRepository } from '../image.repository.fake.js';
-import { Image } from '../image.model.js';
 import {
   FakeStorageService,
   makeFile,
 } from '@/modules/storage/storage.fake.js';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { IImageService } from '../image.interface.js';
+import { Image } from '../image.model.js';
+import { FakeImageRepository } from '../image.repository.fake.js';
+import { ImageService } from '../image.service.js';
+import { ImageAlreadyExistsError } from '@/utils/errors.js';
 
 vi.mock('sharp', () => ({
   default: vi.fn(() => ({
@@ -73,6 +74,20 @@ describe('ImageService', () => {
         'my-image.webp',
         Buffer.from('fake-image'),
       );
+    });
+
+    it('should throw error when image already exist in database', async () => {
+      await imageService.saveImage(makeFile(), 'my-image', {
+        width: 100,
+        height: 100,
+      });
+
+      await expect(
+        imageService.saveImage(makeFile(), 'my-image', {
+          width: 100,
+          height: 100,
+        }),
+      ).rejects.toThrow(ImageAlreadyExistsError);
     });
   });
 

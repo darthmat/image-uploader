@@ -8,6 +8,12 @@ export class ValidationError extends Error {
   }
 }
 
+export class ImageAlreadyExistsError extends Error {
+  constructor(title: string) {
+    super(`Image with title "${title}" already exists`);
+  }
+}
+
 export class InternalError extends Error {
   constructor() {
     super('An internal error occurred.');
@@ -37,12 +43,16 @@ export function errorHandler(
   res: Response,
   _next: NextFunction,
 ): void {
-  console.error(err);
   if (err instanceof ValidateError) {
     res.status(422).json({
       message: 'Validation failed',
       details: err.fields,
     });
+    return;
+  }
+
+  if (err instanceof ImageAlreadyExistsError) {
+    res.status(409).json({ message: err.message });
     return;
   }
 

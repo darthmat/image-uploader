@@ -55,25 +55,12 @@ export class ImageRepository implements IImageRepository {
     };
   }
 
-  async getImage(id: string): Promise<Image | null> {
-    const image = await this.db
-      .selectFrom('image')
-      .selectAll()
-      .where('id', '=', id)
-      .executeTakeFirst();
+  async getImageById(id: string): Promise<Image | null> {
+    return await this.getImage('id', id);
+  }
 
-    if (!image) return null;
-
-    return Image.fromPersistence({
-      id: image.id,
-      title: image.title,
-      url: new URL(image.url),
-      height: image.height,
-      width: image.width,
-      type: image.type,
-      size: image.size,
-      createdAt: image.created_at,
-    });
+  async getImageByTitle(title: string): Promise<Image | null> {
+    return await this.getImage('title', title);
   }
 
   async saveImage(image: Image): Promise<void> {
@@ -89,5 +76,29 @@ export class ImageRepository implements IImageRepository {
         size: image.size,
       })
       .execute();
+  }
+
+  private async getImage(
+    column: 'id' | 'title',
+    value: string,
+  ): Promise<Image | null> {
+    const image = await this.db
+      .selectFrom('image')
+      .selectAll()
+      .where(column, '=', value)
+      .executeTakeFirst();
+
+    if (!image) return null;
+
+    return Image.fromPersistence({
+      id: image.id,
+      title: image.title,
+      url: new URL(image.url),
+      height: image.height,
+      width: image.width,
+      type: image.type,
+      size: image.size,
+      createdAt: image.created_at,
+    });
   }
 }

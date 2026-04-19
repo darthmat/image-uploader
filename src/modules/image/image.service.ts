@@ -8,6 +8,7 @@ import {
   PaginatedResult,
 } from './image.interface.js';
 import { Image } from './image.model.js';
+import { ImageAlreadyExistsError, ValidationError } from '@/utils/errors.js';
 
 export class ImageService implements IImageService {
   constructor(
@@ -40,7 +41,7 @@ export class ImageService implements IImageService {
   }
 
   async getImage(id: string): Promise<ImageDTO | null> {
-    const image = await this.imageRepository.getImage(id);
+    const image = await this.imageRepository.getImageById(id);
 
     if (!image) return null;
 
@@ -58,12 +59,18 @@ export class ImageService implements IImageService {
     title: string,
     dimensions: { width: number; height: number },
   ): Promise<void> {
+    const image = await this.imageRepository.getImageByTitle(title);
+
+    if (image) {
+      throw new ImageAlreadyExistsError('Image already exist');
+    }
+
     const { data: buffer, info } = await sharp(file.buffer)
       .resize(dimensions.width, dimensions.height)
       .toBuffer({ resolveWithObject: true });
 
     const path = await this.storageService.save(
-      `${crypto.randomUUID()}.${info.format}`,
+      `${title}.${info.format}`,
       buffer,
     );
 
