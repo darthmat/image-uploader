@@ -12,23 +12,20 @@ import {
 } from 'tsoa';
 import { ImageDTO } from './image.dto.js';
 import { IImageService, PaginatedResult } from './image.interface.js';
-import { EntityNotFoundError, ValidationError } from '@/utils/errors.js';
-
-const ALLOWED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-  'image/webp',
-];
+import { EntityNotFoundError } from '@/utils/errors.js';
+import { IImageValidationService } from '../validation/validation.interface.js';
 
 @Route('images')
 export class ImagesController extends Controller {
-  constructor(private readonly imageService: IImageService) {
+  constructor(
+    private readonly imageService: IImageService,
+    private readonly imageValidationService: IImageValidationService,
+  ) {
     super();
   }
 
   @Get(':id')
-  @SuccessResponse('200', 'OK')
+  @SuccessResponse(200, 'OK')
   @Response(404, 'Image not found')
   async getImage(@Path() id: string): Promise<ImageDTO | null> {
     const image = await this.imageService.getImage(id);
@@ -41,7 +38,7 @@ export class ImagesController extends Controller {
   }
 
   @Get()
-  @SuccessResponse('200', 'OK')
+  @SuccessResponse(200, 'OK')
   async getImages(
     @Query() title?: string,
     @Query() offset = 0,
@@ -57,7 +54,7 @@ export class ImagesController extends Controller {
   }
 
   @Post()
-  @SuccessResponse('200', 'OK')
+  @SuccessResponse(200, 'OK')
   @Response(400, 'Validation failed')
   async saveImages(
     @UploadedFile() file: Express.Multer.File,
@@ -65,20 +62,15 @@ export class ImagesController extends Controller {
     @FormField() height: string,
     @FormField() title: string,
   ): Promise<void> {
-    if (!ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
-      throw new ValidationError('Unsupported image format');
-    }
-
     const parsedWidth = Number(width);
     const parsedHeight = Number(height);
 
-    if (isNaN(parsedWidth) || isNaN(parsedHeight)) {
-      throw new ValidationError('Width and height must be valid numbers');
-    }
-
-    if (parsedWidth <= 0 || parsedHeight <= 0) {
-      throw new ValidationError('Width and height must be positive numbers');
-    }
+    this.imageValidationService.validate(
+      file,
+      parsedWidth,
+      parsedHeight,
+      title,
+    );
 
     await this.imageService.saveImage(file, title, {
       width: parsedWidth,

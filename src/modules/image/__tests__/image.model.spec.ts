@@ -17,7 +17,7 @@ describe('Image', () => {
       expect(image).toBeDefined();
     });
 
-    it('throws when title is too short', () => {
+    it('throws validation error when title is too short', () => {
       expect(() =>
         Image.create({
           title: 'ab',
@@ -29,6 +29,20 @@ describe('Image', () => {
           createdAt: new Date(),
         }),
       ).toThrow('Title too short');
+    });
+
+    it('throws validation error when title is too long', () => {
+      expect(() =>
+        Image.create({
+          title: 'a'.repeat(256),
+          url: new URL('http://localhost/fake-uploads/ab'),
+          width: 200,
+          height: 150,
+          type: 'image/webp',
+          size: 1000,
+          createdAt: new Date(),
+        }),
+      ).toThrow('Title too long');
     });
   });
 });

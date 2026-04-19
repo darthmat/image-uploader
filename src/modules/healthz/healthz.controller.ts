@@ -9,7 +9,7 @@ interface HealthCheck {
 @Route('healthz')
 export class HealthzController extends Controller {
   @Get()
-  @SuccessResponse('200', 'OK')
+  @SuccessResponse(200, 'OK')
   async healthz(): Promise<HealthCheck> {
     return {
       uptime: process.uptime(),

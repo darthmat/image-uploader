@@ -1,5 +1,8 @@
 import { ValidationError } from '@/utils/errors.js';
 
+const MIN_TITLE_LENGTH = 3;
+const MAX_TITLE_LENGTH = 255;
+
 export class Image {
   readonly id: string;
   readonly title: string;
@@ -24,7 +27,11 @@ export class Image {
   }
 
   static create(data: Omit<ImageData, 'id'>): Image {
-    if (data.title.length < 3) throw new ValidationError('Title too short');
+    if (data.title.length < MIN_TITLE_LENGTH)
+      throw new ValidationError('Title too short');
+
+    if (data.title.length > MAX_TITLE_LENGTH)
+      throw new ValidationError('Title too long');
 
     return new Image({
       ...data,
