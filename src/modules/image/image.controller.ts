@@ -7,13 +7,11 @@ import {
   SuccessResponse,
   Response,
   UploadedFile,
-  Middlewares,
   Query,
   FormField,
 } from 'tsoa';
 import { ImageDTO } from './image.dto.js';
 import { IImageService } from './image.interface.js';
-import multer, { memoryStorage } from 'multer';
 
 const ALLOWED_IMAGE_TYPES = [
   'image/jpeg',
@@ -21,17 +19,6 @@ const ALLOWED_IMAGE_TYPES = [
   'image/gif',
   'image/webp',
 ];
-
-const uploadMiddleware = multer({
-  storage: memoryStorage(),
-  fileFilter: (_req, file, cb) => {
-    if (ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Unsupported image format'));
-    }
-  },
-}).single('file');
 
 @Route('images')
 export class ImagesController extends Controller {
@@ -60,7 +47,6 @@ export class ImagesController extends Controller {
   }
 
   @Post()
-  @Middlewares(uploadMiddleware)
   @SuccessResponse('200', 'OK')
   async saveImages(
     @UploadedFile() file: Express.Multer.File,
@@ -68,6 +54,10 @@ export class ImagesController extends Controller {
     @Query() height: number,
     @FormField() title: string,
   ): Promise<void> {
+    if (!ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
+      throw new Error('Unsupported image format');
+    }
+
     await this.imageService.saveImage(file, title, { width, height });
   }
 }

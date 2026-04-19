@@ -37,7 +37,9 @@ export class ImageService implements IImageService {
       .resize(dimensions.width, dimensions.height)
       .toBuffer();
 
-    const path = await this.storageService.save(title, buffer);
+    const filename = `${title}.webp`;
+
+    const path = await this.storageService.save(filename, buffer);
 
     await this.imageRepository.saveImage(
       Image.create({

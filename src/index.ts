@@ -6,17 +6,13 @@ import { config, dbConfig } from './config.js';
 import { container } from './container.js';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import multer from 'multer';
 
 const _dirname = dirname(fileURLToPath(import.meta.url));
 
 async function start() {
-  await container(dbConfig);
+  await container(dbConfig, config);
 
   const app = express();
-  const upload = multer({ storage: multer.memoryStorage() });
-
-  app.use(upload.single('file'));
 
   app.use(express.json());
 

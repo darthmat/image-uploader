@@ -2,11 +2,13 @@ import * as z from 'zod';
 
 export const envSchema = z.object({
   host: z.string().default('localhost'),
+  appUrl: z.string().default('http://localhost:4000'),
   port: z.coerce.number().default(4000),
 });
 
 export const config = envSchema.parse({
   host: process.env.APP_HOST,
+  appUrl: process.env.APP_URL,
   port: process.env.PORT,
 });
 
