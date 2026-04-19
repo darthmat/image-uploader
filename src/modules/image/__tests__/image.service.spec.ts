@@ -75,4 +75,115 @@ describe('ImageService', () => {
       );
     });
   });
+
+  describe('getImages', () => {
+    it('should return empty paginated result when no images exist', async () => {
+      const result = await imageService.getImages({});
+
+      expect(result).toEqual({
+        data: [],
+        total: 0,
+        offset: undefined,
+        limit: undefined,
+      });
+    });
+
+    it('should return paginated result with images', async () => {
+      const mockImage = Image.fromPersistence({
+        id: 'test-id',
+        title: 'Test Image',
+        url: new URL('https://example.com/image.jpg'),
+        height: 100,
+        width: 200,
+        type: '',
+        size: 0,
+        createdAt: new Date(),
+      });
+
+      await imageRepository.saveImage(mockImage);
+
+      const result = await imageService.getImages({});
+
+      expect(result).toEqual({
+        data: [
+          {
+            id: 'test-id',
+            title: 'Test Image',
+            url: new URL('https://example.com/image.jpg'),
+            height: 100,
+            width: 200,
+          },
+        ],
+        total: 1,
+        offset: undefined,
+        limit: undefined,
+      });
+    });
+
+    it('should return filtered images with title', async () => {
+      const images = [
+        Image.fromPersistence({
+          id: 'test-id-1',
+          title: 'Test Image',
+          url: new URL('https://example.com/image.jpg'),
+          height: 100,
+          width: 200,
+          type: '',
+          size: 0,
+          createdAt: new Date(),
+        }),
+        Image.fromPersistence({
+          id: 'test-id-2',
+          title: 'Other Image',
+          url: new URL('https://example.com/image2.jpg'),
+          height: 100,
+          width: 200,
+          type: '',
+          size: 0,
+          createdAt: new Date(),
+        }),
+      ];
+
+      for (const image of images) {
+        await imageRepository.saveImage(image);
+      }
+
+      const result = await imageService.getImages({}, 'Test Image');
+
+      expect(result.data).toEqual([
+        {
+          id: 'test-id-1',
+          title: 'Test Image',
+          url: new URL('https://example.com/image.jpg'),
+          height: 100,
+          width: 200,
+        },
+      ]);
+    });
+
+    it('should correctly paginate', async () => {
+      const images = Array.from({ length: 5 }, (_, i) =>
+        Image.fromPersistence({
+          id: `test-id-${i}`,
+          title: `Image ${i}`,
+          url: new URL(`https://example.com/image${i}.jpg`),
+          height: 100,
+          width: 200,
+          type: '',
+          size: 0,
+          createdAt: new Date(),
+        }),
+      );
+
+      for (const image of images) {
+        await imageRepository.saveImage(image);
+      }
+
+      const result = await imageService.getImages({ offset: 1, limit: 2 });
+
+      expect(result.total).toBe(5);
+      expect(result.offset).toBe(1);
+      expect(result.limit).toBe(2);
+    });
+  });
 });

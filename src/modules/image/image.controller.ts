@@ -9,9 +9,10 @@ import {
   UploadedFile,
   Query,
   FormField,
+  Body,
 } from 'tsoa';
 import { ImageDTO } from './image.dto.js';
-import { IImageService } from './image.interface.js';
+import { IImageService, PaginatedResult } from './image.interface.js';
 
 const ALLOWED_IMAGE_TYPES = [
   'image/jpeg',
@@ -42,8 +43,18 @@ export class ImagesController extends Controller {
 
   @Get()
   @SuccessResponse('200', 'OK')
-  async getImages(): Promise<ImageDTO[]> {
-    return await this.imageService.getImages();
+  async getImages(
+    @Query() title: string,
+    @Query() offset = 0,
+    @Query() limit = 10,
+  ): Promise<PaginatedResult<ImageDTO>> {
+    return await this.imageService.getImages(
+      {
+        offset,
+        limit,
+      },
+      title,
+    );
   }
 
   @Post()

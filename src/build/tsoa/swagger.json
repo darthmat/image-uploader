@@ -41,6 +41,34 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"PaginatedResult_ImageDTO_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ImageDTO"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"data",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"HealthCheck": {
 				"properties": {
 					"uptime": {
@@ -117,17 +145,43 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/ImageDTO"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/PaginatedResult_ImageDTO_"
 								}
 							}
 						}
 					}
 				},
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "title",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			},
 			"post": {
 				"operationId": "SaveImages",

@@ -1,7 +1,12 @@
 import sharp from 'sharp';
 import { IStorageService } from '../storage/storage.interface.js';
 import { ImageDTO } from './image.dto.js';
-import { IImageRepository, IImageService } from './image.interface.js';
+import {
+  IImageRepository,
+  IImageService,
+  PageSelection,
+  PaginatedResult,
+} from './image.interface.js';
 import { Image } from './image.model.js';
 
 export class ImageService implements IImageService {
@@ -10,8 +15,28 @@ export class ImageService implements IImageService {
     private readonly storageService: IStorageService,
   ) {}
 
-  async getImages(): Promise<ImageDTO[]> {
-    throw new Error('Method not implemented.');
+  async getImages(
+    page: PageSelection,
+    title?: string,
+  ): Promise<PaginatedResult<ImageDTO>> {
+    const images = await this.imageRepository.getImages(page, title);
+
+    const imageDTO = images.data.map((image) => {
+      return {
+        id: image.id,
+        title: image.title,
+        url: image.url,
+        height: image.height,
+        width: image.width,
+      };
+    });
+
+    return {
+      data: imageDTO,
+      total: images.total,
+      offset: images.offset,
+      limit: images.limit,
+    };
   }
 
   async getImage(id: string): Promise<ImageDTO | null> {
