@@ -11,7 +11,8 @@
     "lint:fix": "eslint src --fix",
     "test": "vitest",
     "migrations": "tsx --env-file=.env src/database/migration.ts",
-    "tsoa": "tsx src/tsoa.ts"
+    "tsoa": "tsx src/tsoa.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "@tsoa/runtime": "^6.6.0",
@@ -39,6 +40,7 @@
     "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
     "prettier": "^3.8.2",
     "testcontainers": "^11.14.0",
     "tsc-alias": "^1.8.16",
