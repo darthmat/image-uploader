@@ -11,7 +11,10 @@ import {
 vi.mock('sharp', () => ({
   default: vi.fn(() => ({
     resize: vi.fn().mockReturnThis(),
-    toBuffer: vi.fn().mockResolvedValue(Buffer.from('fake-image')),
+    toBuffer: vi.fn().mockResolvedValue({
+      data: Buffer.from('fake-image'),
+      info: { format: 'webp', width: 200, height: 150, size: 10 },
+    }),
   })),
 }));
 

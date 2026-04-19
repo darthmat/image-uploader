@@ -33,13 +33,14 @@ export class ImageService implements IImageService {
     title: string,
     dimensions: { width: number; height: number },
   ): Promise<void> {
-    const buffer = await sharp(file.buffer)
+    const { data: buffer, info } = await sharp(file.buffer)
       .resize(dimensions.width, dimensions.height)
-      .toBuffer();
+      .toBuffer({ resolveWithObject: true });
 
-    const filename = `${title}.webp`;
-
-    const path = await this.storageService.save(filename, buffer);
+    const path = await this.storageService.save(
+      `${title}.${info.format}`,
+      buffer,
+    );
 
     await this.imageRepository.saveImage(
       Image.create({
