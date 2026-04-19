@@ -6,12 +6,12 @@ The application requires Docker and Docker Compose to run, targeting **Node 24**
 All dependencies are managed with `pnpm`.
 
 ### Installation
+Copy `.env.example` to `.env` and fill in your database credentials.
 #### Docker:
 ```sh
 docker compose up --build
 ```
 #### Local:
-Copy the .env.example file to .env and fill in your local database credentials. Then run:
 ```sh
 pnpm install
 pnpm develop
