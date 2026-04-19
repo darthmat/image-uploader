@@ -16,7 +16,7 @@ export class ImageRepository implements IImageRepository {
     let query = this.db.selectFrom('image');
 
     if (title) {
-      query = query.where('title', 'like', '%title%');
+      query = query.where('title', 'like', `%${title}%`);
     }
 
     const queryWithoutPagination = query;

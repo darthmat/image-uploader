@@ -76,6 +76,10 @@ export class ImagesController extends Controller {
       throw new ValidationError('Width and height must be valid numbers');
     }
 
+    if (parsedWidth <= 0 || parsedHeight <= 0) {
+      throw new ValidationError('Width and height must be positive numbers');
+    }
+
     await this.imageService.saveImage(file, title, {
       width: parsedWidth,
       height: parsedHeight,
