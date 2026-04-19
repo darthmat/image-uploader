@@ -148,8 +148,8 @@ export function RegisterRoutes(app: Router,opts?:{multer?:ReturnType<typeof mult
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsImagesController_saveImages: Record<string, TsoaRoute.ParameterSchema> = {
                 file: {"in":"formData","name":"file","required":true,"dataType":"file"},
-                width: {"in":"query","name":"width","required":true,"dataType":"double"},
-                height: {"in":"query","name":"height","required":true,"dataType":"double"},
+                width: {"in":"formData","name":"width","required":true,"dataType":"string"},
+                height: {"in":"formData","name":"height","required":true,"dataType":"string"},
                 title: {"in":"formData","name":"title","required":true,"dataType":"string"},
         };
         app.post('/images',

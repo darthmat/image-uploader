@@ -194,26 +194,7 @@
 					}
 				},
 				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "width",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "height",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
@@ -225,12 +206,20 @@
 										"type": "string",
 										"format": "binary"
 									},
+									"width": {
+										"type": "string"
+									},
+									"height": {
+										"type": "string"
+									},
 									"title": {
 										"type": "string"
 									}
 								},
 								"required": [
 									"file",
+									"width",
+									"height",
 									"title"
 								]
 							}

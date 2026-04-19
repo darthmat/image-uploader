@@ -61,14 +61,24 @@ export class ImagesController extends Controller {
   @Response(400, 'Validation failed')
   async saveImages(
     @UploadedFile() file: Express.Multer.File,
-    @Query() width: number,
-    @Query() height: number,
+    @FormField() width: string,
+    @FormField() height: string,
     @FormField() title: string,
   ): Promise<void> {
     if (!ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
       throw new ValidationError('Unsupported image format');
     }
 
-    await this.imageService.saveImage(file, title, { width, height });
+    const parsedWidth = Number(width);
+    const parsedHeight = Number(height);
+
+    if (isNaN(parsedWidth) || isNaN(parsedHeight)) {
+      throw new ValidationError('Width and height must be valid numbers');
+    }
+
+    await this.imageService.saveImage(file, title, {
+      width: parsedWidth,
+      height: parsedHeight,
+    });
   }
 }

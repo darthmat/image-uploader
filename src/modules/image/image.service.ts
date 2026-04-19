@@ -63,7 +63,7 @@ export class ImageService implements IImageService {
       .toBuffer({ resolveWithObject: true });
 
     const path = await this.storageService.save(
-      `${title}.${info.format}`,
+      `${crypto.randomUUID()}.${info.format}`,
       buffer,
     );
 
