@@ -9,10 +9,10 @@ import {
   UploadedFile,
   Query,
   FormField,
-  Body,
 } from 'tsoa';
 import { ImageDTO } from './image.dto.js';
 import { IImageService, PaginatedResult } from './image.interface.js';
+import { EntityNotFoundError, ValidationError } from '@/utils/errors.js';
 
 const ALLOWED_IMAGE_TYPES = [
   'image/jpeg',
@@ -34,8 +34,7 @@ export class ImagesController extends Controller {
     const image = await this.imageService.getImage(id);
 
     if (!image) {
-      this.setStatus(404);
-      throw new Error('Image not found');
+      throw new EntityNotFoundError('Image', id);
     }
 
     return image;
@@ -44,7 +43,7 @@ export class ImagesController extends Controller {
   @Get()
   @SuccessResponse('200', 'OK')
   async getImages(
-    @Query() title: string,
+    @Query() title?: string,
     @Query() offset = 0,
     @Query() limit = 10,
   ): Promise<PaginatedResult<ImageDTO>> {
@@ -59,6 +58,7 @@ export class ImagesController extends Controller {
 
   @Post()
   @SuccessResponse('200', 'OK')
+  @Response(400, 'Validation failed')
   async saveImages(
     @UploadedFile() file: Express.Multer.File,
     @Query() width: number,
@@ -66,7 +66,7 @@ export class ImagesController extends Controller {
     @FormField() title: string,
   ): Promise<void> {
     if (!ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
-      throw new Error('Unsupported image format');
+      throw new ValidationError('Unsupported image format');
     }
 
     await this.imageService.saveImage(file, title, { width, height });

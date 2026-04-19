@@ -156,7 +156,7 @@
 					{
 						"in": "query",
 						"name": "title",
-						"required": true,
+						"required": false,
 						"schema": {
 							"type": "string"
 						}
@@ -188,6 +188,9 @@
 				"responses": {
 					"200": {
 						"description": "OK"
+					},
+					"400": {
+						"description": "Validation failed"
 					}
 				},
 				"security": [],

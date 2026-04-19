@@ -110,7 +110,7 @@ export function RegisterRoutes(app: Router,opts?:{multer?:ReturnType<typeof mult
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsImagesController_getImages: Record<string, TsoaRoute.ParameterSchema> = {
-                title: {"in":"query","name":"title","required":true,"dataType":"string"},
+                title: {"in":"query","name":"title","dataType":"string"},
                 offset: {"default":0,"in":"query","name":"offset","dataType":"double"},
                 limit: {"default":10,"in":"query","name":"limit","dataType":"double"},
         };

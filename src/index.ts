@@ -6,6 +6,7 @@ import { config, dbConfig } from './config.js';
 import { container } from './container.js';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import { errorHandler } from './utils/errors.js';
 
 const _dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -41,8 +42,10 @@ async function start() {
 
   RegisterRoutes(app);
 
+  app.use(errorHandler);
+
   app.listen(config.port, () => {
-    console.log(`Example app listening on port ${config.port}`);
+    console.log(`Image uploader app listening on ${config.appUrl}`);
   });
 }
 
