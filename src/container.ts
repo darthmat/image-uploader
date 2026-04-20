@@ -1,4 +1,9 @@
-import { Config, DbConfig } from './config.js';
+import {
+  ALLOWED_IMAGE_TYPES,
+  Config,
+  DbConfig,
+  MAX_IMAGE_DIMENSION,
+} from './config.js';
 import { createDatabase } from './database/db.js';
 import { HealthzController } from './modules/healthz/healthz.controller.js';
 import { ImagesController } from './modules/image/image.controller.js';
@@ -7,15 +12,6 @@ import { ImageService } from './modules/image/image.service.js';
 import { StorageService } from './modules/storage/storage.service.js';
 import { ImageValidationService } from './modules/validation/validation.service.js';
 import { bindAll } from './tsoa.ioc.js';
-
-const ALLOWED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-  'image/webp',
-];
-
-const MAX_IMAGE_DIMENSION = 10000;
 
 export async function container(dbConfig: DbConfig, config: Config) {
   const db = createDatabase(dbConfig);
