@@ -25,7 +25,7 @@ export class Image {
     } = data);
   }
 
-  static create(data: Omit<ImageData, 'id'>): Image {
+  static create(data: Omit<ImageData, 'id' | 'createdAt'>): Image {
     if (data.title.length < Image.minTitleLength)
       throw new ValidationError('Title too short');
 
@@ -35,6 +35,7 @@ export class Image {
     return new Image({
       ...data,
       id: crypto.randomUUID(),
+      createdAt: new Date(),
     });
   }
 

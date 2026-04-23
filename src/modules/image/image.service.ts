@@ -82,7 +82,6 @@ export class ImageService implements IImageService {
         width: dimensions.width,
         type: file.mimetype,
         size: buffer.length,
-        createdAt: new Date(),
       }),
     );
   }

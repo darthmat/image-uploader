@@ -74,6 +74,8 @@ export class ImageRepository implements IImageRepository {
         width: image.width,
         type: image.type,
         size: image.size,
+        // eslint-disable-next-line @typescript-eslint/naming-convention -- Kysely expect snake case for database
+        created_at: image.createdAt,
       })
       .execute();
   }

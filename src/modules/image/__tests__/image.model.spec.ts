@@ -11,7 +11,6 @@ describe('Image', () => {
         height: 150,
         type: 'image/webp',
         size: 1000,
-        createdAt: new Date(),
       });
 
       expect(image).toBeDefined();
@@ -26,7 +25,6 @@ describe('Image', () => {
           height: 150,
           type: 'image/webp',
           size: 1000,
-          createdAt: new Date(),
         }),
       ).toThrow('Title too short');
     });
@@ -40,7 +38,6 @@ describe('Image', () => {
           height: 150,
           type: 'image/webp',
           size: 1000,
-          createdAt: new Date(),
         }),
       ).toThrow('Title too long');
     });
