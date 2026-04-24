@@ -14,6 +14,7 @@ docker compose up --build
 #### Local:
 ```sh
 pnpm install
+pnpm migrations
 pnpm develop
 ```
 
